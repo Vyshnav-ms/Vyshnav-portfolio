@@ -52,8 +52,8 @@ const projectsData = [
       "Modern developer portfolio showcasing projects and skills with interactive animations and responsive design",
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     image: "/dark-theme-ironman-futuristic-portfolio.jpg",
-    github: "#",
-    live: "#",
+    github: "https://github.com/Vyshnav-ms/Vyshnav-portfolio",
+    live: "https://vyshnavms-portfolio.vercel.app/",
   },
 ]
 
