@@ -5,6 +5,10 @@ export async function POST(req: Request) {
   try {
     const { name, email, message } = await req.json();
 
+    if (!name || !email || !message) {
+      return NextResponse.json({ success: false, message: "Missing fields" }, { status: 400 });
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -13,26 +17,22 @@ export async function POST(req: Request) {
       },
     });
 
-    const ownerMail = {
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-      to: "vyshnams1@gmail.com",
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.TO_EMAIL,
       subject: `New message from ${name}`,
-      text: `You received a new message:\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Message: ${message}
+      `,
     };
 
-    const replyMail = {
-      from: `"Vyshnav M S" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: "Thanks for contacting Vyshnav!",
-      text: `Hi ${name},\n\nThanks for reaching out! I’ve received your message:\n"${message}"\n\nI’ll get back to you soon.\n\n— Vyshnav M S`,
-    };
+    await transporter.sendMail(mailOptions);
 
-    await transporter.sendMail(ownerMail);
-    await transporter.sendMail(replyMail);
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Email sending error:", error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    return NextResponse.json({ success: true, message: "Email sent successfully!" });
+  } catch (error: any) {
+    console.error("Email send error:", error);
+    return NextResponse.json({ success: false, message: "Email failed", error: error.message });
   }
 }
