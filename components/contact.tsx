@@ -1,13 +1,12 @@
 "use client";
 
-import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Mail, Github, Linkedin, Phone } from "lucide-react";
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -18,33 +17,34 @@ export default function Contact() {
     return () => observer.disconnect();
   }, []);
 
-  // ✅ Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    setSubmitted(true);
+
+    const formData = new FormData(e.currentTarget);
     const name = formData.get("name");
     const email = formData.get("email");
     const message = formData.get("message");
 
     try {
-      const res = await fetch("/api/sendEmail", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
       });
 
       if (res.ok) {
-        setSubmitted(true);
-        form.reset();
-        setTimeout(() => setSubmitted(false), 3000);
+        alert("✅ Message sent successfully! You’ll receive a confirmation email soon.");
       } else {
-        alert("Failed to send message. Please try again later.");
+        alert("⚠️ Message failed to send. Please try again.");
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong. Please try again.");
+      alert("🚫 Something went wrong while sending your message.");
     }
+
+    e.currentTarget.reset();
+    setSubmitted(false);
   };
 
   return (
@@ -72,7 +72,7 @@ export default function Contact() {
             <span className="text-cyan-400">CONTACT</span>
           </h2>
           <p className="text-gray-400 mt-4 text-lg">
-            Let’s collaborate and build something amazing together
+            Let’s collaborate and build something amazing together 🚀
           </p>
         </div>
 
@@ -150,54 +150,41 @@ export default function Contact() {
               className="p-8 rounded-2xl border border-cyan-600/30 bg-black/40 backdrop-blur-md hover:bg-black/60 transition-all duration-300 hover:shadow-[0_0_40px_#22d3ee60]"
             >
               <div className="space-y-6 mb-8">
-                {/* Name */}
-                <div className="group/input">
-                  <label className="block text-sm font-mono text-gray-400 mb-2 group-hover/input:text-cyan-300 transition-colors duration-300">
-                    Name
-                  </label>
-                  <input
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                    className="w-full px-4 py-2 bg-transparent border border-cyan-600/30 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 hover:border-cyan-500/60 transition-all duration-300 focus:shadow-[0_0_20px_#22d3ee40]"
-                    required
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="group/input">
-                  <label className="block text-sm font-mono text-gray-400 mb-2 group-hover/input:text-cyan-300 transition-colors duration-300">
-                    Email
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    className="w-full px-4 py-2 bg-transparent border border-cyan-600/30 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 hover:border-cyan-500/60 transition-all duration-300 focus:shadow-[0_0_20px_#22d3ee40]"
-                    required
-                  />
-                </div>
-
-                {/* Message */}
-                <div className="group/input">
-                  <label className="block text-sm font-mono text-gray-400 mb-2 group-hover/input:text-cyan-300 transition-colors duration-300">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    rows={4}
-                    placeholder="Your message..."
-                    className="w-full px-4 py-2 bg-transparent border border-cyan-600/30 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 hover:border-cyan-500/60 transition-all duration-300 focus:shadow-[0_0_20px_#22d3ee40] resize-none"
-                    required
-                  ></textarea>
-                </div>
+                {["Name", "Email", "Message"].map((label, i) => (
+                  <div key={i} className="group/input">
+                    <label className="block text-sm font-mono text-gray-400 mb-2 group-hover/input:text-cyan-300 transition-colors duration-300">
+                      {label}
+                    </label>
+                    {label === "Message" ? (
+                      <textarea
+                        name="message"
+                        rows={4}
+                        placeholder="Your message..."
+                        className="w-full px-4 py-2 bg-transparent border border-cyan-600/30 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 hover:border-cyan-500/60 transition-all duration-300 focus:shadow-[0_0_20px_#22d3ee40] resize-none"
+                        required
+                      ></textarea>
+                    ) : (
+                      <input
+                        name={label.toLowerCase()}
+                        type={label === "Email" ? "email" : "text"}
+                        placeholder={
+                          label === "Email"
+                            ? "your@email.com"
+                            : "Your name"
+                        }
+                        className="w-full px-4 py-2 bg-transparent border border-cyan-600/30 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 hover:border-cyan-500/60 transition-all duration-300 focus:shadow-[0_0_20px_#22d3ee40]"
+                        required
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white font-bold rounded-lg border border-cyan-500/60 hover:from-cyan-500 hover:to-cyan-600 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_0_40px_#22d3ee80]"
               >
-                {submitted ? "Message Sent ✓" : "Send Message"}
+                {submitted ? "Message Sending..." : "Send Message"}
               </button>
             </form>
           </div>
