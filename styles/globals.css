@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* 🌌 Cyan Glow Theme Colors */
+  --background: oklch(0.08 0 0);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.1 0 0);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.1 0 0);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.65 0.2 190); /* Bright cyan */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.4 0.12 200);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.25 0 0);
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.65 0.18 200);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.45 0.24 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.25 0 0);
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.65 0.2 190);
+  --chart-1: oklch(0.65 0.2 190);
+  --chart-2: oklch(0.75 0.2 220);
+  --chart-3: oklch(0.5 0.2 180);
+  --chart-4: oklch(0.7 0.2 200);
+  --chart-5: oklch(0.85 0.15 210);
+  --radius: 0.5rem;
+
+  /* Sidebar */
+  --sidebar: oklch(0.1 0 0);
+  --sidebar-foreground: oklch(0.97 0 0);
+  --sidebar-primary: oklch(0.65 0.2 190);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.75 0.2 200);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.65 0.2 190);
+}
+
+.dark {
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.12 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.12 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.75 0.2 190);
+  --primary-foreground: oklch(0.1 0 0);
+  --secondary: oklch(0.25 0.05 200);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.25 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.75 0.2 190);
+  --accent-foreground: oklch(1 0 0);
+  --ring: oklch(0.65 0.2 190);
+  --border: oklch(0.25 0 0);
+  --input: oklch(0.25 0 0);
+  --chart-1: oklch(0.7 0.2 190);
+  --chart-2: oklch(0.85 0.2 210);
+  --chart-3: oklch(0.55 0.2 180);
+  --chart-4: oklch(0.65 0.2 200);
+  --chart-5: oklch(0.8 0.18 195);
+  --sidebar: oklch(0.18 0 0);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.75 0.2 190);
+  --sidebar-primary-foreground: oklch(0.1 0 0);
+  --sidebar-accent: oklch(0.25 0.05 200);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.25 0 0);
+  --sidebar-ring: oklch(0.65 0.2 190);
+}
+
+@theme inline {
+  --font-sans: "Exo 2", "Manrope", sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-gradient-to-b from-black via-slate-900 to-black text-foreground;
+  }
+}
+
+html {
+  @apply bg-black;
+  scroll-behavior: smooth;
+}
+
+/* 🧠 Smooth Font Rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 🌠 Core Body Style */
+body {
+  @apply bg-black text-foreground;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === 🌌 Cyan Glow Animations === */
+
+@keyframes breathing-cyan {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.25);
+  }
+}
+
+@keyframes arc-reactor-pulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), 0 0 60px rgba(0, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(0, 255, 255, 0.8), 0 0 100px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes arc-ring {
+  0% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.2) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes glow-border {
+  0%, 100% {
+    border-color: rgba(0, 255, 255, 0.3);
+    box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2), 0 0 20px rgba(0, 255, 255, 0.25);
+  }
+  50% {
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: inset 0 0 30px rgba(0, 255, 255, 0.35), 0 0 40px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes hologram-flicker {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  }
+  50% {
+    opacity: 0.9;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes pulse-cyan {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0), 0 0 20px rgba(0, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 0 35px rgba(0, 255, 255, 0.3);
+  }
+}
+
+/* === ✨ Utility Classes === */
+
+.animate-arc-pulse { animation: arc-reactor-pulse 3s ease-in-out infinite; }
+.animate-glow-border { animation: glow-border 3s ease-in-out infinite; }
+.animate-breathing-cyan { animation: breathing-cyan 4s ease-in-out infinite; }
+.animate-pulse-cyan { animation: pulse-cyan 2s ease-in-out infinite; }
+.animate-hologram-flicker { animation: hologram-flicker 2s ease-in-out infinite; }
+
+/* === 🧊 Glass Effects === */
+.glass-effect {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-effect-hover:hover {
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+.cursor-tracker {
+  position: relative;
+  background: #000;
+}
+
+/* Optional moving cyan glow for mouse tracking */
+#gradient-overlay {
+  background: radial-gradient(
+    1000px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 255, 255, 0.25) 0%,
+    rgba(0, 255, 255, 0.12) 15%,
+    rgba(0, 255, 255, 0.05) 35%,
+    transparent 100%
+  );
+  transition: all 0.08s ease-out;
+  animation: pulse-cyan 3s ease-in-out infinite;
+}
