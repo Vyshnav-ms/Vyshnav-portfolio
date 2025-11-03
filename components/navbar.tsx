@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -19,77 +18,83 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-black/80 backdrop-blur-xl border-b border-cyan-400/40 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
-          : "bg-gradient-to-b from-black/40 to-transparent border-b border-cyan-400/20"
+          ? "bg-black/80 backdrop-blur-md border-b border-cyan-400/30 shadow-[0_0_25px_rgba(0,255,255,0.3)]"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center gap-3 group cursor-pointer">
-          <div className="relative w-12 h-12">
-            <div className="absolute inset-0 rounded-full border-2 border-cyan-400 animate-pulse group-hover:shadow-[0_0_20px_#00ffff] group-hover:border-cyan-300 transition-all duration-300"></div>
-            <div className="absolute inset-1 rounded-full border border-cyan-500/50 group-hover:border-cyan-300 transition-all duration-300"></div>
-            <div className="flex items-center justify-center w-full h-full">
-              <span className="text-cyan-400 font-bold text-lg group-hover:text-cyan-300 group-hover:scale-110 transition-all duration-300">
-                VMS
-              </span>
-            </div>
-          </div>
-          <span className="text-white font-bold text-xl hidden sm:inline group-hover:text-cyan-400 transition-all duration-300 drop-shadow-lg">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+        {/* Left Section — Logo */}
+        <a
+          href="#home"
+          className="flex items-center gap-3 group cursor-pointer transition-all duration-300"
+        >
+          <Image
+            src="/vysh-logo-1.png"
+            alt="Vyshnav Logo"
+            width={45}
+            height={45}
+            className="transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:brightness-125 drop-shadow-[0_0_10px_#06b6d4] group-hover:drop-shadow-[0_0_20px_#22d3ee]"
+          />
+          <span className="text-white font-semibold text-lg group-hover:text-cyan-400 transition-all duration-300 drop-shadow-[0_0_8px_#06b6d4]">
             Vyshnav M S
           </span>
-        </div>
+        </a>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-8">
-          {navItems.map((item, index) => (
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-10">
+          {navItems.map((item, i) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="text-gray-300 hover:text-cyan-400 transition-all duration-300 relative group font-medium text-sm uppercase tracking-wide"
-              style={{
-                transitionDelay: isScrolled ? `${index * 50}ms` : "0ms",
-                transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-              }}
+              className="relative text-gray-300 uppercase tracking-wide text-sm font-medium transition-all duration-300 hover:text-cyan-400"
             >
-              <span className="relative inline-block">
-                {item}
-                <span className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-cyan-500 to-cyan-300 group-hover:w-full transition-all duration-500"></span>
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-300/30 blur-md group-hover:w-full transition-all duration-500"></span>
-              </span>
+              {item}
+              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-gradient-to-r from-cyan-400 to-cyan-200 transition-all duration-500 group-hover:w-full"></span>
             </a>
           ))}
+        </div>
+
+        {/* Right Section — Button */}
+        <div className="hidden md:block">
+          <a
+            href="#contact"
+            className="px-4 py-2 rounded-lg border border-cyan-400/60 text-cyan-300 hover:bg-cyan-400/20 hover:text-white transition-all duration-300 text-sm font-semibold shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+          >
+            Let’s Connect
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-cyan-400 hover:text-cyan-300 transition-all duration-300 hover:scale-110 relative group"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden text-cyan-400 hover:text-cyan-300 transition-all duration-300"
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          <div className="absolute inset-0 rounded-lg bg-cyan-400/0 group-hover:bg-cyan-400/10 transition-all duration-300"></div>
-          {mobileMenuOpen ? <X className="relative z-10" /> : <Menu className="relative z-10" />}
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-cyan-400/30 p-4 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
-          {navItems.map((item, index) => (
+      {menuOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-cyan-400/20 flex flex-col items-center gap-6 py-6 animate-in fade-in duration-300">
+          {navItems.map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="text-gray-300 hover:text-cyan-400 transition-all duration-300 px-4 py-3 rounded-lg hover:bg-cyan-400/10 border-l-4 border-cyan-400/0 hover:border-cyan-400 font-medium text-sm"
-              style={{
-                animationDelay: `${index * 50}ms`,
-                transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-              }}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => setMenuOpen(false)}
+              className="text-gray-300 text-base font-medium hover:text-cyan-400 transition-all duration-300"
             >
               {item}
             </a>
           ))}
+          <a
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
+            className="px-5 py-2 rounded-lg border border-cyan-400/60 text-cyan-300 hover:bg-cyan-400/20 hover:text-white transition-all duration-300 text-sm font-semibold"
+          >
+            Let’s Connect
+          </a>
         </div>
       )}
     </nav>

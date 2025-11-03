@@ -214,3 +214,22 @@ body {
   transition: all 0.08s ease-out;
   animation: pulse-cyan 3s ease-in-out infinite;
 }
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8) translateY(0px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-8px);
+  }
+}

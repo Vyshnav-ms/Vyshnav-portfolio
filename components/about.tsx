@@ -1,21 +1,22 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export default function About() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+        if (entry.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.1 },
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
@@ -41,11 +42,8 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-16 items-start mb-20">
           {/* Left Column */}
           <div
-            className={`transition-all duration-1000 ease-[cubic-bezier(0.42,0,0.58,1)] ${
-              isVisible
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-20 opacity-0"
-            }`}
+            className={`transition-all duration-1000 ease-[cubic-bezier(0.42,0,0.58,1)] ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
+              }`}
           >
             <div className="space-y-6">
               <p className="text-gray-300 text-lg leading-relaxed group hover:text-gray-100 transition-all duration-300 hover:translate-x-2">
@@ -94,56 +92,49 @@ export default function About() {
               ))}
             </div>
           </div>
-
           {/* Right Column */}
           <div
-            className={`transition-all duration-1000 ease-[cubic-bezier(0.42,0,0.58,1)] ${
-              isVisible
-                ? "translate-x-0 opacity-100"
-                : "translate-x-20 opacity-0"
-            }`}
+            className={`transition-all duration-1000 ease-[cubic-bezier(0.42,0,0.58,1)] ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"
+              }`}
           >
-            <div className="relative h-96 flex items-center justify-center">
-              {/* Pulsing Glow Rings */}
-              <div className="absolute w-64 h-64 border-2 border-cyan-500/30 rounded-full animate-pulse"></div>
-              <div
-                className="absolute w-48 h-48 border-2 border-cyan-400/40 rounded-full animate-pulse"
-                style={{ animationDelay: "1s" }}
-              ></div>
-              <div
-                className="absolute w-32 h-32 border-2 border-cyan-300/50 rounded-full animate-pulse"
-                style={{ animationDelay: "2s" }}
-              ></div>
+            <div className="relative h-[450px] flex items-center justify-center">
+              {/* Rotating Glow Ring */}
+              <div className="absolute w-80 h-80 border border-cyan-400/40 rounded-full animate-[spin_10s_linear_infinite] blur-sm"></div>
+              <div className="absolute w-64 h-64 border border-cyan-300/50 rounded-full animate-[spin_12s_linear_reverse_infinite] blur-sm"></div>
 
-              {/* Center Text */}
-              <div className="text-center z-10">
-                <div className="text-6xl font-extrabold mb-2">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-teal-400 drop-shadow-[0_0_15px_#00ffff]">
-                    VS
-                  </span>
-                </div>
-                <p className="text-cyan-300 font-mono text-sm tracking-wider">
-                  Full Stack Developer
-                </p>
+              {/* Soft Cyan Glow Layer */}
+              <div className="absolute w-72 h-72 rounded-full bg-cyan-500/10 blur-3xl animate-pulse"></div>
+
+              {/* Center Logo (Floating + Glow) */}
+              <div className="relative z-10">
+                <div className="absolute inset-0 rounded-full blur-2xl bg-cyan-500/30 animate-pulse"></div>
+                <Image
+                  src="/vysh-logo-2.png"
+                  alt="Vyshnav Logo"
+                  width={230}
+                  height={230}
+                  className="rounded-full shadow-[0_0_40px_#00ffff] transition-transform duration-700 ease-in-out animate-[float_4s_ease-in-out_infinite]"
+                />
               </div>
 
-              {/* Floating Particles */}
+              {/* Energy Sparks (random floating particles) */}
               <div
-                className="absolute top-0 left-10 w-2 h-2 bg-cyan-400 rounded-full animate-bounce"
-                style={{ animationDelay: "0s" }}
+                className="absolute w-3 h-3 bg-cyan-400 rounded-full animate-[sparkle_3s_ease-in-out_infinite]"
+                style={{ top: "10%", left: "20%" }}
               ></div>
               <div
-                className="absolute bottom-10 right-10 w-2 h-2 bg-cyan-300 rounded-full animate-bounce"
-                style={{ animationDelay: "0.5s" }}
+                className="absolute w-2 h-2 bg-cyan-300 rounded-full animate-[sparkle_4s_ease-in-out_infinite]"
+                style={{ bottom: "15%", right: "25%" }}
               ></div>
               <div
-                className="absolute bottom-0 left-1/2 w-2 h-2 bg-cyan-500 rounded-full animate-bounce"
-                style={{ animationDelay: "1s" }}
+                className="absolute w-2 h-2 bg-cyan-500 rounded-full animate-[sparkle_5s_ease-in-out_infinite]"
+                style={{ bottom: "5%", left: "45%" }}
               ></div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
-  )
+  );
 }
